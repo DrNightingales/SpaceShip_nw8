@@ -12,8 +12,11 @@ TestResults
 *.suo
 *.user
 *.sln.docstates
+<<<<<<< HEAD
 *.sln
 *.csproj
+=======
+>>>>>>> 19e9894acf9046f010730bd6b74748a218875754
 
 # Build results
 [Dd]ebug/
