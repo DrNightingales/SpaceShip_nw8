@@ -142,7 +142,7 @@ namespace SpaceShip_nw8
 
         #endregion
 
-        #region public methods
+        #region Public Methods
 
         public void AddScreen(GameScreen scr, PlayerIndex? ControllingPlayer)
         {
