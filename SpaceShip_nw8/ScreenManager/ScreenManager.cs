@@ -19,7 +19,7 @@ namespace SpaceShip_nw8
         List<GameScreen>ScreensToUpdate = new List<GameScreen>();
 
         InputState input = new InputState();
-        SpriteBatch spriteBach;
+        SpriteBatch spriteBatch;
         SpriteFont font;
         Texture2D _blankTexture;
 
@@ -31,7 +31,7 @@ namespace SpaceShip_nw8
 
         SpriteBatch SpriteBatch
         {
-            get { return spriteBach; }
+            get { return spriteBatch; }
         }
 
         SpriteFont SpriteFont
@@ -65,7 +65,7 @@ namespace SpaceShip_nw8
         {
             ContentManager content = Game.Content;
 
-            spriteBach = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
             font = content.Load<SpriteFont>("menufont");
             _blankTexture = content.Load<Texture2D>("blank");
 
@@ -128,6 +128,60 @@ namespace SpaceShip_nw8
 
                 if (traceEnabled) TraceScreens;
             }
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            foreach (var scr in Screens)
+            {
+                if (scr.StateOfScreen == ScreenState.Active) continue;
+
+                scr.Draw(gameTime);
+            }
+        }
+
+        #endregion
+
+        #region public methods
+
+        public void AddScreen(GameScreen scr, PlayerIndex? ControllingPlayer)
+        {
+            scr.ControllingPlayer = ControllingPlayer;
+            scr.screenManager = this;
+            scr.IsExiting = false;
+
+            if (isInitialized) scr.LoadContent();
+
+            Screens.Add(scr);
+
+            TouchPanel.EnabledGestures = scr.EnableGestures;
+        }
+
+        public void RemoveScreen(GameScreen scr)
+        {
+            if (isInitialized) scr.UnloadContent();
+            Screens.Remove(scr);
+            ScreensToUpdate.Remove(scr);
+
+            if (Screens.Count > 0) TouchPanel.EnabledGestures = Screens[Screens.Count - 1].EnableGestures;
+        }
+
+        public GameScreen[] GetScreens()
+        {
+            return Screens.ToArray();
+        }
+
+        public void FadeBackBufferToBlack(float alpha)
+        {
+            Viewport viewport = GraphicsDevice.Viewport;
+
+            spriteBatch.Begin();
+
+            spriteBatch.Draw(_blankTexture,
+                             new Rectangle(0, 0, viewport.Width, viewport.Height),
+                             Color.Black * alpha);
+
+            spriteBatch.End();
         }
 
         #endregion
