@@ -149,7 +149,7 @@ namespace SpaceShip_nw8
                {
                    this.otherScreenHasFocus = otherScreenHasFocus;
 
-                   if (isExeting)
+                   if (isExiting)
                    {
                        scrSt = ScreenState.TransitionOff;
 
